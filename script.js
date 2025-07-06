@@ -1,41 +1,64 @@
-const video = document.getElementById("video");
-const canvas = document.getElementById("canvas");
-const startBtn = document.getElementById("start");
-const countdownEl = document.getElementById("countdown");
-const output = document.getElementById("output");
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #000;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-// Access webcam
-navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
-  video.srcObject = stream;
-});
+.container {
+  text-align: center;
+  padding: 10px;
+}
 
-// Countdown and snapshot
-startBtn.onclick = () => {
-  let count = 3;
-  countdownEl.innerText = count;
-  countdownEl.style.display = "block";
+h1 {
+  margin-bottom: 10px;
+}
 
-  const interval = setInterval(() => {
-    count--;
-    countdownEl.innerText = count;
-    if (count === 0) {
-      clearInterval(interval);
-      countdownEl.style.display = "none";
-      takePhoto();
-    }
-  }, 1000);
-};
+video {
+  width: 100%;
+  max-width: 340px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
 
-function takePhoto() {
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  const ctx = canvas.getContext("2d");
+#filterSelect {
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 16px;
+}
 
-  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+button {
+  padding: 10px 22px;
+  font-size: 16px;
+  background: #ff0044;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 10px 0;
+}
 
-  const imgURL = canvas.toDataURL("image/png");
-  const img = document.createElement("img");
-  img.src = imgURL;
-  output.innerHTML = "";
-  output.appendChild(img);
+#photoFrame {
+  display: inline-block;
+  padding: 10px;
+  border: 5px solid #fff;
+  border-radius: 20px;
+  background: url('https://i.imgur.com/MStBQQH.png'); /* Optional fancy frame */
+  background-size: cover;
+  margin-top: 10px;
+}
+
+#photo {
+  width: 100%;
+  max-width: 340px;
+  border-radius: 10px;
+}
+
+#countdown {
+  font-size: 36px;
+  margin: 8px;
 }
