@@ -1,64 +1,57 @@
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: #000;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+const video = document.getElementById('video');
+const captureBtn = document.getElementById('captureBtn');
+const canvas = document.getElementById('canvas') || document.createElement('canvas');
+const photo = document.getElementById('photo');
+const countdownEl = document.getElementById('countdown');
+const downloadLink = document.getElementById('downloadLink');
+const filterSelect = document.getElementById('filterSelect');
+
+// Start front camera
+navigator.mediaDevices.getUserMedia({
+  video: { facingMode: 'user' },
+  audio: false
+}).then(stream => {
+  video.srcObject = stream;
+}).catch(err => {
+  alert("Camera error: " + err);
+});
+
+// Apply selected filter live
+filterSelect.addEventListener('change', () => {
+  video.style.filter = filterSelect.value;
+});
+
+// Countdown before capture
+function startCountdown(seconds, callback) {
+  countdownEl.innerText = seconds;
+  const interval = setInterval(() => {
+    seconds--;
+    if (seconds > 0) {
+      countdownEl.innerText = seconds;
+    } else {
+      clearInterval(interval);
+      countdownEl.innerText = '';
+      callback();
+    }
+  }, 1000);
 }
 
-.container {
-  text-align: center;
-  padding: 10px;
-}
+// Capture photo
+captureBtn.addEventListener('click', () => {
+  startCountdown(3, () => {
+    const context = canvas.getContext('2d');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
 
-h1 {
-  margin-bottom: 10px;
-}
+    // Apply filter to canvas too
+    context.filter = filterSelect.value;
+    context.drawImage(video, 0, 0);
+    
+    const imageData = canvas.toDataURL('image/png');
+    photo.src = imageData;
+    photo.style.display = 'block';
 
-video {
-  width: 100%;
-  max-width: 340px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-
-#filterSelect {
-  margin-bottom: 10px;
-  padding: 8px;
-  font-size: 16px;
-}
-
-button {
-  padding: 10px 22px;
-  font-size: 16px;
-  background: #ff0044;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  margin: 10px 0;
-}
-
-#photoFrame {
-  display: inline-block;
-  padding: 10px;
-  border: 5px solid #fff;
-  border-radius: 20px;
-  background: url('https://i.imgur.com/MStBQQH.png'); /* Optional fancy frame */
-  background-size: cover;
-  margin-top: 10px;
-}
-
-#photo {
-  width: 100%;
-  max-width: 340px;
-  border-radius: 10px;
-}
-
-#countdown {
-  font-size: 36px;
-  margin: 8px;
-}
+    downloadLink.href = imageData;
+    downloadLink.style.display = 'inline-block';
+  });
+});
