@@ -9,37 +9,56 @@ body {
   height: 100vh;
 }
 
-.booth {
+.container {
   text-align: center;
+  padding: 10px;
 }
 
-video {
-  width: 300px;
-  border: 5px solid red;
-  border-radius: 12px;
+h1 {
   margin-bottom: 10px;
 }
 
-button {
-  padding: 10px 20px;
+video {
+  width: 100%;
+  max-width: 340px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+#filterSelect {
+  margin-bottom: 10px;
+  padding: 8px;
   font-size: 16px;
-  background: red;
+}
+
+button {
+  padding: 10px 22px;
+  font-size: 16px;
+  background: #ff0044;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
+  margin: 10px 0;
 }
 
-.countdown {
-  font-size: 50px;
-  margin-top: 20px;
-  color: yellow;
-  display: none;
+#photoFrame {
+  display: inline-block;
+  padding: 10px;
+  border: 5px solid #fff;
+  border-radius: 20px;
+  background: url('https://i.imgur.com/MStBQQH.png'); /* Optional fancy frame */
+  background-size: cover;
+  margin-top: 10px;
 }
 
-#output img {
-  margin-top: 20px;
-  width: 300px;
-  border: 3px solid #fff;
+#photo {
+  width: 100%;
+  max-width: 340px;
   border-radius: 10px;
+}
+
+#countdown {
+  font-size: 36px;
+  margin: 8px;
 }
